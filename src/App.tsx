@@ -12,6 +12,9 @@ function App() {
         <Timer timeToRune={20} />
         <Timer timeToRune={20} />
       </div>
+      {/* <div className='timer-action-container'>
+        <button onClick={() => setStartTimer(true)}>Start</button>
+      </div> */}
     </>
   )
 }
