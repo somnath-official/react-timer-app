@@ -4,10 +4,14 @@ import Timer from './components/timer/Timer'
 function App() {
   return (
     <>
-      <Timer />
-      <Timer />
-      <Timer />
-      <Timer />
+      <div className='timer-container'>
+        <Timer timeToRune={30} />
+        <Timer timeToRune={10} />
+        <Timer timeToRune={15} />
+        <Timer timeToRune={20} />
+        <Timer timeToRune={20} />
+        <Timer timeToRune={20} />
+      </div>
     </>
   )
 }

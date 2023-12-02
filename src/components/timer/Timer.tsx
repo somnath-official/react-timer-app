@@ -1,10 +1,14 @@
 import './Timer.css'
 
-const Timer = () => {
+interface PropType {
+	timeToRune: number
+}
+
+const Timer = ({ timeToRune }: PropType) => {
 	return (
-		<>
-			<h1>timer</h1>
-		</>
+		<div className='timer-block'>
+			<div className='time-display'>{timeToRune}</div>
+		</div>
 	)
 }
 
