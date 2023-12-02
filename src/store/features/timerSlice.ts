@@ -28,7 +28,14 @@ export const counterSlice = createSlice({
       state.timers = state.timers.filter((item) => item.id !== action.payload)
     },
     startAlltimer: (state) => {
-      state.startAll = true
+      if (state.timers.length) state.startAll = true
+    },
+    pauseAllTimer: (state) => {
+      if (state.startAll) state.startAll = false
+    },
+    deleteAllTimer: (state) => {
+      state.startAll = false
+      state.timers = []
     },
   },
 })
