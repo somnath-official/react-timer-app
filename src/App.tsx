@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux'
 import './App.css'
 import Timer from './components/timer/Timer'
 import { RootState } from './store'
+import TimerAction from './components/timerAction/TimerAction'
 
 function App() {
   const timerData = useSelector((state: RootState) => state.timer)
@@ -17,9 +18,7 @@ function App() {
           : <div className='no-timer-created'>No timer created</div>
         }
       </div>
-      {/* <div className='timer-action-container'>
-        <button onClick={() => setStartTimer(true)}>Start</button>
-      </div> */}
+      <TimerAction />
     </>
   )
 }

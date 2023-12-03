@@ -1,6 +1,6 @@
 .timer-container {
   display: flex;
-  min-height: 100vh;
+  height: calc(100vh - 112px);
   overflow-y: auto;
   background-color: #e3e3e3;
   gap: 16px;
