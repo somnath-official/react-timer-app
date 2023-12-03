@@ -75,7 +75,8 @@ export const {
   pauseTimer,
   startAlltimer,
   pauseAllTimer,
-  resetAllTimer
+  resetAllTimer,
+  deleteAllTimer,
 } = counterSlice.actions
 
 export default counterSlice.reducer

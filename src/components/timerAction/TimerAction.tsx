@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import './TimerAction.css'
 import { RootState } from '../../store'
-import { pauseAllTimer, resetAllTimer, startAlltimer } from '../../store/features/timerSlice'
+import { deleteAllTimer, pauseAllTimer, resetAllTimer, startAlltimer } from '../../store/features/timerSlice'
 
 const TimerAction = () => {
   const timerData = useSelector((state: RootState) => state.timer)
@@ -38,6 +38,7 @@ const TimerAction = () => {
       <button
         className='btn btn-danger'
         disabled={!timerData.timers.length}
+        onClick={() => dispatch(deleteAllTimer())}
       >
         Delete All
       </button>
