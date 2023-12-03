@@ -1,59 +1,56 @@
-import { useState } from 'react'
 import { getDurationFromSeconds } from '../../utils/time'
 import './Timer.css'
 import PlaySvg from '../../assets/play.svg'
 import PauseSvg from '../../assets/pause.svg'
 import ResetSvg from '../../assets/reset.svg'
+import { useDispatch, useSelector } from 'react-redux'
+import { pauseTimer, resetAllTimer, startTimer } from '../../store/features/timerSlice'
+import { useEffect, useState } from 'react'
+import { RootState } from '../../store'
 
 interface PropType {
-	timeToRune: number
+	id: number
+  secondsToRun: number
+  isRunning: boolean
 }
 
-const Timer = ({ timeToRune }: PropType) => {
+const Timer = ({ id, secondsToRun, isRunning }: PropType) => {
 	const [time, setTime] = useState(0)
-	const [timeId, setTimerId] = useState<number|null>(null)
-	const [isPlaying, setIsPlaying] = useState<boolean>(false)
-	const [shouldReset, setShouldReset] = useState<boolean>(false)
-
-	async function startTimer() {
-		if (timeId) {
-			clearInterval(timeId)
+	const dispatch = useDispatch()
+	const shouldReset = useSelector((state: RootState) => state.timer.resetTimer)
+	
+	useEffect(() => {
+		if (shouldReset) {
+			setTime(0)
+			dispatch(resetAllTimer(false))
 		}
 
-		const t = setInterval(() => {
-			setTime((prev) => {
-				if (prev < timeToRune) {
-					return prev + 1 
-				} else {
-					setShouldReset(true)
-					setIsPlaying(false)
-					return prev
-				}
-			})
+		const timerId = setInterval(() => {
+			if (isRunning) {
+				setTime((prevValue) => {
+					if (prevValue < secondsToRun) return prevValue + 1
+					else return prevValue
+				})
+			}
 		}, 1000)
 
-		setIsPlaying(true)
-		setTimerId(t)
-	}
+		return () => {
+      clearInterval(timerId)
+    };
+	}, [dispatch, isRunning, secondsToRun, shouldReset])
 
-	async function pauseTimer() {
-		if (timeId) {
-			clearInterval(timeId)
-		}
-		setIsPlaying(false)
-	}
-
-	async function resetTimer() {
-		await pauseTimer()
+	const resetTimer = () => {
 		setTime(0)
-		setShouldReset(false)
-		await startTimer()
+		dispatch(startTimer(id))
 	}
 
 	function getTimerControllers() {
-		if (isPlaying && !shouldReset) return <img src={PauseSvg} className='paly-btn btn' onClick={pauseTimer}/>
-		else if (!isPlaying && !shouldReset) return <img src={PlaySvg} className='paly-btn btn' onClick={startTimer}/>
-		else if (shouldReset) return <img src={ResetSvg} className='paly-btn btn' onClick={resetTimer}/>
+		if (isRunning && time < secondsToRun)
+			return <img src={PauseSvg} className='paly-btn btn' onClick={() => dispatch(pauseTimer(id))}/>
+		else if (!isRunning && time < secondsToRun)
+			return <img src={PlaySvg} className='paly-btn btn' onClick={() => dispatch(startTimer(id))}/>
+		else if (time >= secondsToRun)
+			return <img src={ResetSvg} className='paly-btn btn' onClick={resetTimer}/>
 	}
 
 	return (

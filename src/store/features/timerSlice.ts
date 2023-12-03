@@ -1,20 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-interface Timer {
+interface TimerInterFace {
   id: number
-  seconds: number
+  secondsToRun: number
+  isRunning: boolean
 }
 
-export interface TimerState {
-  startAll: boolean
-  timers: Timer[]
+export interface TimerStateInterFace {
+  timers: TimerInterFace[]
+  resetTimer: boolean
 }
 
-const initialState: TimerState = 
+const initialState: TimerStateInterFace = 
 {
-  startAll: false,
-  timers: []
+  resetTimer: false,
+  timers: [
+    {id: 1, secondsToRun: 10, isRunning: false},
+    {id: 2, secondsToRun: 38, isRunning: false},
+    {id: 3, secondsToRun: 15, isRunning: false},
+    {id: 4, secondsToRun: 20, isRunning: false},
+    {id: 5, secondsToRun: 30, isRunning: false},
+  ]
 }
 
 export const counterSlice = createSlice({
@@ -22,25 +29,53 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     createNewTimer: (state, action: PayloadAction<number>) => {
-      state.timers.push({id: + new Date(), seconds: action.payload })
+      state.timers.push({
+        id: + new Date(),
+        secondsToRun: action.payload,
+        isRunning: false,
+      })
     },
     deleteTimer: (state, action: PayloadAction<number>) => {
       state.timers = state.timers.filter((item) => item.id !== action.payload)
     },
+    startTimer: (state, action: PayloadAction<number>) => {
+      state.timers.filter((item) => {
+        if (item.id == action.payload)
+          item.isRunning = true
+      })
+    },
+    pauseTimer: (state, action: PayloadAction<number>) => {
+      state.timers.filter((item) => {
+        if (item.id == action.payload)
+          item.isRunning = false
+      })
+    },
     startAlltimer: (state) => {
-      if (state.timers.length) state.startAll = true
+      if (state.timers.length)
+        state.timers.filter((item) => item.isRunning = true)
     },
     pauseAllTimer: (state) => {
-      if (state.startAll) state.startAll = false
+      if (state.timers.length)
+        state.timers.filter((item) => item.isRunning = false)
+    },
+    resetAllTimer: (state, action: PayloadAction<boolean>) => {
+      if (state.timers.length) state.resetTimer = action.payload
     },
     deleteAllTimer: (state) => {
-      state.startAll = false
       state.timers = []
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { createNewTimer, deleteTimer, startAlltimer } = counterSlice.actions
+export const {
+  createNewTimer,
+  deleteTimer,
+  startTimer,
+  pauseTimer,
+  startAlltimer,
+  pauseAllTimer,
+  resetAllTimer
+} = counterSlice.actions
 
 export default counterSlice.reducer

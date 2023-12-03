@@ -13,7 +13,14 @@ function App() {
         {
           timerData.timers.length
           ? timerData.timers.map((timer) => {
-              return <Timer timeToRune={timer.seconds} key={timer.id}/>
+              return (
+                <Timer
+                  key={timer.id}
+                  id={timer.id}
+                  secondsToRun={timer.secondsToRun}
+                  isRunning={timer.isRunning}
+                />
+              )
             })
           : <div className='no-timer-created'>No timer created</div>
         }
