@@ -18,18 +18,24 @@ const Timer = ({ id, secondsToRun, isRunning }: PropType) => {
 	const [time, setTime] = useState(0)
 	const dispatch = useDispatch()
 	const shouldReset = useSelector((state: RootState) => state.timer.resetTimer)
+	const [deg, setDeg] = useState('0deg')
 	
 	useEffect(() => {
 		if (shouldReset) {
 			setTime(0)
+			setDeg(`0deg`)
 			dispatch(resetAllTimer(false))
 		}
 
 		const timerId = setInterval(() => {
 			if (isRunning) {
 				setTime((prevValue) => {
-					if (prevValue < secondsToRun) return prevValue + 1
-					else return prevValue
+					let updatedTime
+					if (prevValue < secondsToRun) updatedTime = prevValue + 1
+					else updatedTime = prevValue
+					const r = (updatedTime / secondsToRun) * 360
+					setDeg(`${r}deg`)
+					return updatedTime
 				})
 			}
 		}, 1000)
@@ -56,11 +62,13 @@ const Timer = ({ id, secondsToRun, isRunning }: PropType) => {
 	return (
 		<div className='timer-block'>
 			<div className='time-display'>{getDurationFromSeconds(time)}</div>
-			<div className='timer-controller-holder'>
-				{
-					getTimerControllers()
-				}
-			</div>
+			<div
+				className='timer-progress-bar'
+				style={{
+					backgroundImage: `conic-gradient(#69e9d7 ${deg}, #201f1f ${deg})`
+				}}
+			></div>
+			<div className='timer-controller-holder'>{ getTimerControllers() }</div>
 		</div>
 	)
 }
