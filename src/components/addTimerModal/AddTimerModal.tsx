@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import './AddTimerModal.css'
+import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { createNewTimer } from '../../store/features/timerSlice'
 
 interface AddTimerModalProps {
   show: boolean
@@ -9,6 +12,7 @@ interface AddTimerModalProps {
 const AddTimerModal = ({show, toggleModal}: AddTimerModalProps) => {
   const modalRef = useRef(null)
   const [seconds, setSeconds] = useState()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -29,7 +33,16 @@ const AddTimerModal = ({show, toggleModal}: AddTimerModalProps) => {
     }
   }, [show])
 
-  function addTimerData() {}
+  function addTimerData() {
+    const s = Number(seconds)
+    if (s === 0) {
+      toast.warn('0 seconds not allowed')
+      return
+    }
+    dispatch(createNewTimer(s))
+    toast.success('Successfully added new timer')
+    toggleModal(false)
+  }
 
   return (
     show

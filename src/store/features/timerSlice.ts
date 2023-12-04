@@ -15,13 +15,7 @@ export interface TimerStateInterFace {
 const initialState: TimerStateInterFace = 
 {
   resetTimer: false,
-  timers: [
-    {id: 1, secondsToRun: 10, isRunning: false},
-    {id: 2, secondsToRun: 38, isRunning: false},
-    {id: 3, secondsToRun: 15, isRunning: false},
-    {id: 4, secondsToRun: 20, isRunning: false},
-    {id: 5, secondsToRun: 30, isRunning: false},
-  ]
+  timers: [],
 }
 
 export const counterSlice = createSlice({
