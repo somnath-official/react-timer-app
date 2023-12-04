@@ -19,6 +19,7 @@ function App() {
                   id={timer.id}
                   secondsToRun={timer.secondsToRun}
                   isRunning={timer.isRunning}
+                  startDelay={timer.startDelay}
                 />
               )
             })

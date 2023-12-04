@@ -13,38 +13,49 @@ interface PropType {
 	id: number
   secondsToRun: number
   isRunning: boolean
+	startDelay: number
 }
 
-const Timer = ({ id, secondsToRun, isRunning }: PropType) => {
+const Timer = ({ id, secondsToRun, startDelay, isRunning }: PropType) => {
 	const [time, setTime] = useState(0)
 	const dispatch = useDispatch()
 	const shouldReset = useSelector((state: RootState) => state.timer.resetTimer)
 	const [deg, setDeg] = useState('0deg')
 	
 	useEffect(() => {
+		// console.log(startDelay)
 		if (shouldReset) {
 			setTime(0)
 			setDeg(`0deg`)
 			dispatch(resetAllTimer(false))
 		}
 
-		const timerId = setInterval(() => {
-			if (isRunning) {
-				setTime((prevValue) => {
-					let updatedTime
-					if (prevValue < secondsToRun) updatedTime = prevValue + 1
-					else updatedTime = prevValue
-					const r = (updatedTime / secondsToRun) * 360
-					setDeg(`${r}deg`)
-					return updatedTime
-				})
-			}
-		}, 1000)
+		let timeIntervalId: number | null = null
+		let setTimeOutId: number | null = null
+
+		if (startDelay) setTimeOutId = setTimeout(trackTime, startDelay * 1000)
+		else trackTime()
+
+		function trackTime() {
+			timeIntervalId = setInterval(() => {
+				if (isRunning) {
+					setTime((prevValue) => {
+						let updatedTime
+						if (prevValue < secondsToRun) updatedTime = prevValue + 1
+						else updatedTime = prevValue
+						const r = (updatedTime / secondsToRun) * 360
+						setDeg(`${r}deg`)
+						return updatedTime
+					})
+				}
+			}, 1000)
+		}
 
 		return () => {
-      clearInterval(timerId)
+			if (timeIntervalId) clearInterval(timeIntervalId)
+			if (setTimeOutId) clearTimeout(setTimeOutId)
     };
-	}, [dispatch, isRunning, secondsToRun, shouldReset])
+	}, [dispatch, isRunning, secondsToRun, shouldReset, startDelay])
 
 	const resetTimer = () => {
 		setTime(0)

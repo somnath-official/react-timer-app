@@ -5,16 +5,19 @@ interface TimerInterFace {
   id: number
   secondsToRun: number
   isRunning: boolean
+  startDelay: number
 }
 
 export interface TimerStateInterFace {
-  timers: TimerInterFace[]
   resetTimer: boolean
+  longestTimerTime: number
+  timers: TimerInterFace[]
 }
 
 const initialState: TimerStateInterFace = 
 {
   resetTimer: false,
+  longestTimerTime: 0,
   timers: [],
 }
 
@@ -23,10 +26,15 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     createNewTimer: (state, action: PayloadAction<number>) => {
+      if (action.payload > state.longestTimerTime) state.longestTimerTime = action.payload
       state.timers.push({
         id: + new Date(),
         secondsToRun: action.payload,
         isRunning: false,
+        startDelay: 0,
+      })
+      state.timers.filter((item) => {
+        item.startDelay = state.longestTimerTime - item.secondsToRun
       })
     },
     deleteTimer: (state, action: PayloadAction<number>) => {
