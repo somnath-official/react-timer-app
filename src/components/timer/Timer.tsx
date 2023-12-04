@@ -23,7 +23,6 @@ const Timer = ({ id, secondsToRun, startDelay, isRunning }: PropType) => {
 	const [deg, setDeg] = useState('0deg')
 	
 	useEffect(() => {
-		// console.log(startDelay)
 		if (shouldReset) {
 			setTime(0)
 			setDeg(`0deg`)
@@ -88,7 +87,10 @@ const Timer = ({ id, secondsToRun, startDelay, isRunning }: PropType) => {
 
 	return (
 		<div className='timer-block'>
-			<div className='time-display'>{getDurationFromSeconds(time)}</div>
+			<div className='time-display'>
+				<span>{getDurationFromSeconds(time)}</span>
+				<span style={{fontSize: '15px'}}>{getDurationFromSeconds(secondsToRun)}</span>
+			</div>
 			<div
 				className='timer-progress-bar'
 				style={{
