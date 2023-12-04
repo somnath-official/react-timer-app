@@ -3,8 +3,9 @@ import './Timer.css'
 import PlaySvg from '../../assets/play.svg'
 import PauseSvg from '../../assets/pause.svg'
 import ResetSvg from '../../assets/reset.svg'
+import DeleteSvg from '../../assets/delete.svg'
 import { useDispatch, useSelector } from 'react-redux'
-import { pauseTimer, resetAllTimer, startTimer } from '../../store/features/timerSlice'
+import { deleteTimer, pauseTimer, resetAllTimer, startTimer } from '../../store/features/timerSlice'
 import { useEffect, useState } from 'react'
 import { RootState } from '../../store'
 
@@ -52,11 +53,26 @@ const Timer = ({ id, secondsToRun, isRunning }: PropType) => {
 
 	function getTimerControllers() {
 		if (isRunning && time < secondsToRun)
-			return <img src={PauseSvg} className='paly-btn btn' onClick={() => dispatch(pauseTimer(id))}/>
+			return (
+				<>
+					<img src={PauseSvg} className='paly-btn btn' onClick={() => dispatch(pauseTimer(id))}/>
+					<img src={DeleteSvg} className='paly-btn btn' onClick={() => dispatch(deleteTimer(id))}/>
+				</>
+			)
 		else if (!isRunning && time < secondsToRun)
-			return <img src={PlaySvg} className='paly-btn btn' onClick={() => dispatch(startTimer(id))}/>
+			return (
+				<>
+					<img src={PlaySvg} className='paly-btn btn' onClick={() => dispatch(startTimer(id))}/>
+					<img src={DeleteSvg} className='paly-btn btn' onClick={() => dispatch(deleteTimer(id))}/>
+				</>
+			)
 		else if (time >= secondsToRun)
-			return <img src={ResetSvg} className='paly-btn btn' onClick={resetTimer}/>
+			return (
+				<>
+					<img src={ResetSvg} className='paly-btn btn' onClick={resetTimer}/>
+					<img src={DeleteSvg} className='paly-btn btn' onClick={() => dispatch(deleteTimer(id))}/>
+				</>
+			)
 	}
 
 	return (
