@@ -97,7 +97,7 @@ const Timer = ({ id, secondsToRun, startDelay, isRunning }: PropType) => {
 					backgroundImage: `conic-gradient(#69e9d7 ${deg}, #201f1f ${deg})`
 				}}
 			></div>
-			<div className='timer-controller-holder'>{ getTimerControllers() }</div>
+			{/* <div className='timer-controller-holder'>{ getTimerControllers() }</div> */}
 		</div>
 	)
 }
