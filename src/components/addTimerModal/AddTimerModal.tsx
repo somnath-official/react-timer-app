@@ -38,6 +38,9 @@ const AddTimerModal = ({show, toggleModal}: AddTimerModalProps) => {
     if (s === 0) {
       toast.warn('0 seconds not allowed')
       return
+    } else if (s < 0) {
+      toast.warn('Negative value not allowed')
+      return
     }
     dispatch(createNewTimer(s))
     toast.success('Successfully added new timer')

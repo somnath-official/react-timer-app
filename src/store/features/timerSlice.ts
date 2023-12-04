@@ -65,6 +65,8 @@ export const counterSlice = createSlice({
     },
     deleteAllTimer: (state) => {
       state.timers = []
+      state.resetTimer = false
+      state.longestTimerTime = 0
     },
   },
 })
